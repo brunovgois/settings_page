@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './../data/shared_prefs.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -8,12 +9,25 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   double fontSize = 16;
   List<int> colors = [0xFF455A64, 0xFFFFC107, 0xFF673AB7, 0xFF795548];
-  int selectedColor = 0xff1976d2;
+
+  int selectedColor;
+
+  SharedPrefs sharedPrefs;
+  @override
+  void initState() {
+    sharedPrefs = SharedPrefs();
+    sharedPrefs.init().then((_) => setState(() {
+          selectedColor = sharedPrefs.getColor();
+        }));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Color(selectedColor),
+      ),
       body: Container(
         padding: const EdgeInsets.all(10),
         child: Column(
@@ -78,6 +92,7 @@ class _SettingsPageState extends State<SettingsPage> {
   void setColor(int colorIndex) {
     setState(() {
       selectedColor = colors[colorIndex];
+      sharedPrefs.setColor(colors[colorIndex]);
     });
   }
 }

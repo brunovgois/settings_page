@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:settings_page/data/shared_prefs.dart';
 import 'pages/settings_page.dart';
 
 void main() {
@@ -23,9 +24,23 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  SharedPrefs sharedPrefs;
+  int themeColor;
+
+  @override
+  void initState() {
+    sharedPrefs = SharedPrefs();
+    sharedPrefs.init();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Demo App Title'),
+        backgroundColor: Color(sharedPrefs.getColor()),
+      ),
       drawer: Drawer(
         child: ListView(
           children: [
@@ -34,23 +49,26 @@ class _MyHomePageState extends State<MyHomePage> {
               onTap: () {
                 print('tap');
                 Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return SettingsPage();
-                }));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return SettingsPage();
+                    },
+                  ),
+                );
+                setState(() {}); //bug
               },
             ),
           ],
         ),
-      ),
-      appBar: AppBar(
-        title: Text('Demo App Title'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have selected the app font to be: ',
+              'You have the app font to be: ',
             ),
           ],
         ),
