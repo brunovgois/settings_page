@@ -17,6 +17,7 @@ class _SettingsPageState extends State<SettingsPage> {
       body: Container(
         padding: const EdgeInsets.all(10),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Column(
               children: [
@@ -39,11 +40,6 @@ class _SettingsPageState extends State<SettingsPage> {
                     });
                   },
                 ),
-              ],
-            ),
-            Divider(),
-            Column(
-              children: [
                 Text(
                   'Set the App main color',
                   style: TextStyle(
@@ -72,7 +68,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ],
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
