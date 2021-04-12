@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:settings_page/main.dart';
 import './../data/shared_prefs.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -16,9 +17,8 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     sharedPrefs = SharedPrefs();
-    sharedPrefs.init().then((_) => setState(() {
-          selectedColor = sharedPrefs.getColor();
-        }));
+    sharedPrefs.init();
+    selectedColor = sharedPrefs.getColor();
     super.initState();
   }
 
@@ -64,19 +64,59 @@ class _SettingsPageState extends State<SettingsPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     GestureDetector(
-                      onTap: () => setColor(0),
+                      onTap: () => {
+                        setColor(0),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return MyHomePage();
+                            },
+                          ),
+                        ),
+                      },
                       child: ColorCircle(colors[0]),
                     ),
                     GestureDetector(
-                      onTap: () => setColor(1),
+                      onTap: () => {
+                        setColor(1),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return MyHomePage();
+                            },
+                          ),
+                        ),
+                      },
                       child: ColorCircle(colors[1]),
                     ),
                     GestureDetector(
-                      onTap: () => setColor(2),
+                      onTap: () => {
+                        setColor(2),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return MyHomePage();
+                            },
+                          ),
+                        ),
+                      },
                       child: ColorCircle(colors[2]),
                     ),
                     GestureDetector(
-                      onTap: () => setColor(3),
+                      onTap: () => {
+                        setColor(3),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return MyHomePage();
+                            },
+                          ),
+                        )
+                      },
                       child: ColorCircle(colors[3]),
                     ),
                   ],

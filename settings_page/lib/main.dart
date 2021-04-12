@@ -25,12 +25,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   SharedPrefs sharedPrefs;
-  int themeColor;
+  int themeColor = 0xFFF00000;
 
   @override
   void initState() {
     sharedPrefs = SharedPrefs();
     sharedPrefs.init();
+    themeColor = sharedPrefs.getColor();
     super.initState();
   }
 
@@ -39,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Demo App Title'),
-        backgroundColor: Color(sharedPrefs.getColor()),
+        backgroundColor: Color(themeColor),
       ),
       drawer: Drawer(
         child: ListView(
@@ -47,7 +48,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: Text('Settings Page'),
               onTap: () {
-                print('tap');
                 Navigator.pop(context);
                 Navigator.push(
                   context,
@@ -57,7 +57,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     },
                   ),
                 );
-                setState(() {}); //bug
               },
             ),
           ],
