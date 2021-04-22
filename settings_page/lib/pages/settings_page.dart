@@ -23,7 +23,7 @@ class _SettingsPageState extends State<SettingsPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _selectedColor = (prefs.getInt('color') ?? 0xFFFFC107);
-      _fontSize = (prefs.getDouble('FontSize') ?? 16);
+      _fontSize = (prefs.getDouble('fontSize') ?? 16);
     });
   }
 
