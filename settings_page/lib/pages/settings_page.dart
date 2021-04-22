@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:settings_page/main.dart';
-import './../data/shared_prefs.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -8,25 +8,41 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  double fontSize = 16;
+  double _fontSize;
   List<int> colors = [0xFF455A64, 0xFFFFC107, 0xFF673AB7, 0xFF795548];
 
-  int selectedColor;
+  int _selectedColor;
 
-  SharedPrefs sharedPrefs;
   @override
   void initState() {
-    sharedPrefs = SharedPrefs();
-    sharedPrefs.init();
-    selectedColor = sharedPrefs.getColor();
     super.initState();
+    _loadConfigs();
+  }
+
+  void _loadConfigs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _selectedColor = (prefs.getInt('color') ?? 0xFFFFC107);
+      _fontSize = (prefs.getDouble('FontSize') ?? 16);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(selectedColor),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return MyHomePage();
+              },
+            ),
+          ),
+        ),
+        backgroundColor: Color(_selectedColor),
       ),
       body: Container(
         padding: const EdgeInsets.all(10),
@@ -38,26 +54,26 @@ class _SettingsPageState extends State<SettingsPage> {
                 Text(
                   'Set the App font size',
                   style: TextStyle(
-                    fontSize: fontSize,
+                    fontSize: _fontSize,
                   ),
                 ),
                 Slider(
-                  activeColor: Color(selectedColor),
-                  label: fontSize.round().toString(),
+                  activeColor: Color(_selectedColor),
+                  label: _fontSize.round().toString(),
                   min: 12,
                   max: 44,
                   divisions: 5,
-                  value: fontSize,
+                  value: _fontSize,
                   onChanged: (double newValue) {
                     setState(() {
-                      fontSize = newValue;
+                      setFontSize(newValue);
                     });
                   },
                 ),
                 Text(
                   'Set the App main color',
                   style: TextStyle(
-                    fontSize: fontSize,
+                    fontSize: _fontSize,
                   ),
                 ),
                 Row(
@@ -66,56 +82,24 @@ class _SettingsPageState extends State<SettingsPage> {
                     GestureDetector(
                       onTap: () => {
                         setColor(0),
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return MyHomePage();
-                            },
-                          ),
-                        ),
                       },
                       child: ColorCircle(colors[0]),
                     ),
                     GestureDetector(
                       onTap: () => {
                         setColor(1),
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return MyHomePage();
-                            },
-                          ),
-                        ),
                       },
                       child: ColorCircle(colors[1]),
                     ),
                     GestureDetector(
                       onTap: () => {
                         setColor(2),
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return MyHomePage();
-                            },
-                          ),
-                        ),
                       },
                       child: ColorCircle(colors[2]),
                     ),
                     GestureDetector(
                       onTap: () => {
                         setColor(3),
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return MyHomePage();
-                            },
-                          ),
-                        )
                       },
                       child: ColorCircle(colors[3]),
                     ),
@@ -129,10 +113,19 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  void setColor(int colorIndex) {
+  void setColor(int colorIndex) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      selectedColor = colors[colorIndex];
-      sharedPrefs.setColor(colors[colorIndex]);
+      _selectedColor = colors[colorIndex];
+      prefs.setInt('color', colors[colorIndex]);
+    });
+  }
+
+  void setFontSize(double fontSize) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _fontSize = fontSize;
+      prefs.setDouble('fontSize', fontSize);
     });
   }
 }

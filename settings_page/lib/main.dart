@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:settings_page/data/shared_prefs.dart';
 import 'pages/settings_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,15 +24,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  SharedPrefs sharedPrefs;
-  int themeColor = 0xFFF00000;
+  int _themeColor;
 
   @override
   void initState() {
-    sharedPrefs = SharedPrefs();
-    sharedPrefs.init();
-    themeColor = sharedPrefs.getColor();
     super.initState();
+    _loadConfigs();
+  }
+
+  void _loadConfigs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _themeColor = (prefs.getInt('color') ?? 0xFFF00000);
+    });
   }
 
   @override
@@ -40,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Demo App Title'),
-        backgroundColor: Color(themeColor),
+        backgroundColor: Color(_themeColor),
       ),
       drawer: Drawer(
         child: ListView(
@@ -48,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: Text('Settings Page'),
               onTap: () {
-                Navigator.pop(context);
+                // Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -56,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       return SettingsPage();
                     },
                   ),
-                );
+                ).then((value) => setState(() {}));
               },
             ),
           ],
