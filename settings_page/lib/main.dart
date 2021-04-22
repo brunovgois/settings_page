@@ -25,6 +25,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _themeColor;
+  double _fontSize;
 
   @override
   void initState() {
@@ -36,6 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _themeColor = (prefs.getInt('color') ?? 0xFFF00000);
+      _fontSize = (prefs.getDouble('fontSize') ?? 16);
     });
   }
 
@@ -71,7 +73,8 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have the app font to be: ',
+              'You have the app font to be: ${_fontSize.round()}',
+              style: TextStyle(fontSize: _fontSize),
             ),
           ],
         ),
