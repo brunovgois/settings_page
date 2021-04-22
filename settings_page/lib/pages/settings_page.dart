@@ -33,14 +33,11 @@ class _SettingsPageState extends State<SettingsPage> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                return MyHomePage();
-              },
-            ),
-          ),
+          onPressed: () => Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => MyHomePage(),
+              ),
+              (Route<dynamic> route) => false),
         ),
         backgroundColor: Color(_selectedColor),
       ),

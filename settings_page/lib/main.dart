@@ -54,15 +54,9 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: Text('Settings Page'),
               onTap: () {
-                // Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return SettingsPage();
-                    },
-                  ),
-                ).then((value) => setState(() {}));
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => SettingsPage()),
+                    (Route<dynamic> route) => false);
               },
             ),
           ],
